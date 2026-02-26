@@ -2,6 +2,22 @@ import numpy as np
 from scipy.io import wavfile
 
 
+def exception_handler(exception:Exception,pathfile:str)->str:
+
+    exception_messages={
+        FileNotFoundError:f"File '{pathfile}' not found",
+        IsADirectoryError:f"'{pathfile}' is a direcotry not a file",
+        PermissionError:f"Couldn't open '{pathfile}' permission denied",
+        ValueError:"Wrong file format\nOnly 'RIFF', 'RIFX', and 'RF64' supported."
+    }
+    for exception_type,exception_message in exception_messages.items():
+        if isinstance(exception,exception_type):
+            return exception_message
+    if isinstance(exception,OSError) and exception.errno==22:
+        return f"'{pathfile}' is not a valid file path'"
+    return f"Unexcpected type of OSError occured: {exception}"
+
+
 def hps_single_frame(frame:list, sample_rate:int, iterations:int)->int:
 
     spectrun = np.fft.fft(frame)
@@ -27,19 +43,9 @@ def gender_recognition(pathfile:str,frame_ms:int=150,hop_ms:int=30,iterations:in
     try:
         sr, data = wavfile.read(pathfile)
 
-    except FileNotFoundError:
-        return f"File '{pathfile}' not found"
+    except (FileNotFoundError,IsADirectoryError,PermissionError,OSError,ValueError) as exception:
+        return exception_handler(exception,pathfile)
 
-    except IsADirectoryError:
-        return f" '{pathfile}' is a direcotry not a file"
-
-    except PermissionError:
-        return f"Couldn't open '{pathfile}' permission denied"
-    except OSError as e:
-        if e.errno==22:
-            return f"'{pathfile}' is not a valid file path'"
-    except ValueError:
-        return "Wrong file format\nOnly 'RIFF', 'RIFX', and 'RF64' supported."
 
     if data.ndim > 1:
         data = data.mean(axis=1)
