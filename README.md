@@ -41,7 +41,7 @@ The parameter values used during testing the algorithm's performance:
 | **Actual M** |     1656     |       0      |
 | **Actual W** |      278     |     1908     |
 
-$\displaystyle Accuracy=\frac{1656 + 1908}{1656 + 1908 + 278 + 0}\approx 92.76\\%$  &nbsp; $\displaystyle Precision=\frac{1656}{1656 + 278}\approx 85.63\\%$ &nbsp; $\displaystyle Recall=\frac{1656}{1656 + 0}=100\\%$
+$\displaystyle Accuracy=\frac{1656 + 1908}{1656 + 1908 + 278 + 0}\approx 92.76\\%$  </br></br>  $\displaystyle Precision=\frac{1656}{1656 + 278}\approx 85.63\\%$ </br></br> $\displaystyle Recall=\frac{1656}{1656 + 0}=100\\%$
 
 #### Gender Recognition by Voice
 
@@ -50,4 +50,4 @@ $\displaystyle Accuracy=\frac{1656 + 1908}{1656 + 1908 + 278 + 0}\approx 92.76\\
 | **Actual M** |     10197    |      183     |
 | **Actual W** |      375     |     5393     |
 
-$\displaystyle Accuracy=\frac{10197 + 5393}{10197 + 5393 + 183 + 375}\approx 96.54\\%$  &nbsp; $\displaystyle Precision=\frac{10197}{10197 + 375}\approx 96.45\\%$ &nbsp; $\displaystyle Recall=\frac{10197}{10197 + 183}\approx 98.24\\%$ 
+$\displaystyle Accuracy=\frac{10197 + 5393}{10197 + 5393 + 183 + 375}\approx 96.54\\%$  </br></br> $\displaystyle Precision=\frac{10197}{10197 + 375}\approx 96.45\\%$ </br></br> $\displaystyle Recall=\frac{10197}{10197 + 183}\approx 98.24\\%$ 
