@@ -2,7 +2,7 @@ import numpy as np
 from scipy.io import wavfile
 
 
-def HPS_Single_Frame(frame:list, sample_rate:int, iterations:int)->int:
+def hps_single_frame(frame:list, sample_rate:int, iterations:int)->int:
 
     spectrun = np.fft.fft(frame)
     spectrun = np.abs(spectrun)
@@ -11,37 +11,35 @@ def HPS_Single_Frame(frame:list, sample_rate:int, iterations:int)->int:
     n = len(spectrun)
 
     for harmonic in range(2, iterations+1):
-        down = spectrun[::harmonic]              
-        limit = min(len(down), len(hps)) 
+        down = spectrun[::harmonic]
+        limit = min(len(down), len(hps))
         hps[:limit] *= down[:limit]
 
-    
     hps = hps[:n//2]
     freqs = np.fft.fftfreq(n, 1/sample_rate)[:n//2]
 
-    
     peak = np.argmax(hps[1:]) + 1
     f0 = freqs[peak]
     return f0
 
 
-def Gender_Recognition(pathfile:str,frame_ms:int=150,hop_ms:int=30,iterations:int=3)->str:
+def gender_recognition(pathfile:str,frame_ms:int=150,hop_ms:int=30,iterations:int=3)->str:
     try:
         sr, data = wavfile.read(pathfile)
 
     except FileNotFoundError:
         return f"File '{pathfile}' not found"
-    
+
     except IsADirectoryError:
         return f" '{pathfile}' is a direcotry not a file"
-    
+
     except PermissionError:
         return f"Couldn't open '{pathfile}' permission denied"
     except OSError as e:
         if e.errno==22:
             return f"'{pathfile}' is not a valid file path'"
     except ValueError:
-        return f"Wrong file format\nOnly 'RIFF', 'RIFX', and 'RF64' supported."
+        return "Wrong file format\nOnly 'RIFF', 'RIFX', and 'RF64' supported."
 
     if data.ndim > 1:
         data = data.mean(axis=1)
@@ -60,24 +58,21 @@ def Gender_Recognition(pathfile:str,frame_ms:int=150,hop_ms:int=30,iterations:in
         frame = data[start:start+frame_len]
         frame = frame*np.hamming(len(frame))
 
-        f0 = HPS_Single_Frame(frame, sr, iterations=iterations)
+        f0 = hps_single_frame(frame, sr, iterations=iterations)
         if f0<85 or f0>260:
             continue
         labels.append('M') if abs(f0-165)<abs(f0-180) else labels.append('W')
-                
+
 
     if len(labels) == 0:
-        f0 = HPS_Single_Frame(data, sr, iterations)
+        f0 = hps_single_frame(data, sr, iterations)
         if f0 < 165:
             return 'M'
-        else:
-            return 'W'
-
-    count_M = labels.count('M')
-    count_W = labels.count('W')
-
-    if count_W > count_M:
         return 'W'
-    else:
-        return 'M'
-    
+
+    count_men = labels.count('M')
+    count_women = labels.count('W')
+
+    if count_women > count_men:
+        return 'W'
+    return 'M'
