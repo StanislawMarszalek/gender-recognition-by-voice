@@ -10,11 +10,11 @@ def main():
     parameters=parser.add_argument_group("Algorithm parameters")
     add_info=parser.add_argument_group("Additional information")
     parameters.add_argument("file",type=str,help="Path to the .wav file")
-    parameters.add_argument("-fr","--frame_ms",type=int,help="Frames length in miliseconds (deafault value: 150)")
-    parameters.add_argument("-hop","--hop_ms",type=int,help="Hop length in miliseconds (deafault value: 30)")
+    parameters.add_argument("-fr","--frame_ms",type=int,help="Frames length in milliseconds (deafault value: 150)")
+    parameters.add_argument("-hop","--hop_ms",type=int,help="Hop length in milliseconds (deafault value: 30)")
     parameters.add_argument("-it","--iterations",type=int,help="Number of iterations for Harmonic Product Spectrum algorithm (deafault value: 3)")
     add_info.add_argument("-w","--warnings",action="store_true",help="Show warnings")
-    add_info.add_argument("-t","--time",action="store_true",help="Show execution time in miliseconds")
+    add_info.add_argument("-t","--time",action="store_true",help="Show execution time in milliseconds")
 
     args=parser.parse_args()
     pathfile=args.file
